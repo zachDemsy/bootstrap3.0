@@ -1,0 +1,25 @@
+.table-hover tbody tr:hover {
+    background-color: orangered;
+    color: black;
+    font-weight: bold;
+    /* Optional: Change text color to white for contrast */
+}
+
+.pagination-hover ul li:hover {
+    background-color: orangered;
+    color: black;
+    font-weight: bold;
+    /* Optional: Change text color to white for contrast */
+}
+
+.table-rounded {
+    border-radius: 5px;
+    /* Apply a border radius to the table */
+    overflow: hidden;
+    /* Ensure content doesn't overflow outside rounded corners */
+}
+
+.table thead,
+tbody {
+    background-color: aquamarine;
+}

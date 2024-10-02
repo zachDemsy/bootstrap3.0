@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="3Dgradin.css">
+    <title>Interactive 3D Rotating Box and Circle</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="moving-gradient-circle"> <canvas id="myCanvas" width="500" height="500"></canvas>
+
+        <script>
+            const canvas = document.getElementById('myCanvas');
+            const ctx = canvas.getContext('2d');
+
+            let isDragging = false;
+            let rotationX = 0;
+            let rotationY = 0;
+            let lastMouseX, lastMouseY;
+
+            const boxSize = 200;
+            const circleRadius = 50;
+
+            // Vertices of the cube (relative to center)
+            const vertices = [{
+                x: -1,
+                y: -1,
+                z: -1
+            }, {
+                x: 1,
+                y: -1,
+                z: -1
+            }, {
+                x: 1,
+                y: 1,
+                z: -1
+            }, {
+                x: -1,
+                y: 1,
+                z: -1
+            }, {
+                x: -1,
+                y: -1,
+                z: 1
+            }, {
+                x: 1,
+                y: -1,
+                z: 1
+            }, {
+                x: 1,
+                y: 1,
+                z: 1
+            }, {
+                x: -1,
+                y: 1,
+                z: 1
+            }, ];
+
+            // Edges of the cube, connecting vertices
+            const edges = [
+                [0, 1],
+                [1, 2],
+                [2, 3],
+                [3, 0], // Back face
+                [4, 5],
+                [5, 6],
+                [6, 7],
+                [7, 4], // Front face
+                [0, 4],
+                [1, 5],
+                [2, 6],
+                [3, 7] // Connecting edges
+            ];
+
+            function projectVertex(vertex) {
+                const scale = 150;
+                const distance = 3;
+
+                // Apply rotation around the X axis
+                let y = vertex.y * Math.cos(rotationX) - vertex.z * Math.sin(rotationX);
+                let z = vertex.y * Math.sin(rotationX) + vertex.z * Math.cos(rotationX);
+                let x = vertex.x;
+
+                // Apply rotation around the Y axis
+                let xRotated = x * Math.cos(rotationY) + z * Math.sin(rotationY);
+                let zRotated = -x * Math.sin(rotationY) + z * Math.cos(rotationY);
+
+                // Project the 3D point to 2D space
+                const factor = scale / (zRotated + distance);
+                return {
+                    x: xRotated * factor + canvas.width / 2,
+                    y: y * factor + canvas.height / 2
+                };
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw the horizontal line intersecting the 3D box and circle
+                ctx.beginPath();
+                ctx.moveTo(0, canvas.height / 2);
+                ctx.lineTo(canvas.width, canvas.height / 2);
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Draw the cube
+                for (let edge of edges) {
+                    const start = projectVertex(vertices[edge[0]]);
+                    const end = projectVertex(vertices[edge[1]]);
+                    ctx.beginPath();
+                    ctx.moveTo(start.x, start.y);
+                    ctx.lineTo(end.x, end.y);
+                    ctx.strokeStyle = 'black';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+
+                // Draw the circle inside the box
+                const circleCenter = projectVertex({
+                    x: 0,
+                    y: 0,
+                    z: 0
+                });
+                const projectedRadius = circleRadius * (150 / (3 + 1)); // Adjust for perspective
+                ctx.beginPath();
+                ctx.arc(circleCenter.x, circleCenter.y, projectedRadius, 0, Math.PI * 2);
+                ctx.strokeStyle = 'blue';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.fillStyle = 'rgba(0, 0, 255, 0.2)';
+                ctx.fill();
+            }
+
+            // Mouse down event to start rotating
+            canvas.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+            });
+
+            // Mouse move event to rotate the box and circle
+            canvas.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    const deltaX = e.clientX - lastMouseX;
+                    const deltaY = e.clientY - lastMouseY;
+                    rotationY += deltaX * 0.01; // Adjust rotation speed
+                    rotationX += deltaY * 0.01; // Adjust rotation speed
+                    lastMouseX = e.clientX;
+                    lastMouseY = e.clientY;
+                    draw();
+                }
+            });
+
+            // Mouse up event to stop rotating
+            canvas.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            // Initial drawing of the box and circle
+            draw();
+        </script>
+    </div>
+</body>
+
+</html>

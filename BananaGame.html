@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Movable and Rotatable Banana</title>
+    <link rel="stylesheet" href="3Dgradin.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        #bananaContainer {
+            width: 300px;
+            height: 300px;
+            perspective: 1000px;
+            position: relative;
+        }
+        
+        #banana {
+            width: 100px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transform-style: preserve-3d;
+            transition: transform 0.1s linear;
+            cursor: grab;
+        }
+        
+        #counter {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <Div name="moving-gradient-circle">
+        <div id="bananaContainer">
+            <img id="banana" src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg" alt="Banana">
+        </div>
+        <div id="counter">Clicks: 0</div>
+
+        <script>
+            const banana = document.getElementById('banana');
+            const counter = document.getElementById('counter');
+            let isDragging = false;
+            let lastMouseX, lastMouseY;
+            let rotationX = 0;
+            let rotationY = 0;
+            let offsetX = 0;
+            let offsetY = 0;
+            let clickCount = 0;
+
+            // Mouse down event to start rotating or moving
+            banana.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+
+                banana.style.cursor = 'grabbing';
+            });
+
+            // Mouse move event to rotate or move the banana
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    const deltaX = e.clientX - lastMouseX;
+                    const deltaY = e.clientY - lastMouseY;
+
+                    if (e.shiftKey) {
+                        // Rotate the banana if Shift key is pressed
+                        rotationY += deltaX * 0.5; // Adjust rotation speed
+                        rotationX -= deltaY * 0.5; // Adjust rotation speed
+                        banana.style.transform = `translate(-50%, -50%) rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+                    } else {
+                        // Move the banana otherwise
+                        offsetX += deltaX;
+                        offsetY += deltaY;
+                        banana.style.left = `calc(50% + ${offsetX}px)`;
+                        banana.style.top = `calc(50% + ${offsetY}px)`;
+                    }
+
+                    lastMouseX = e.clientX;
+                    lastMouseY = e.clientY;
+                }
+            });
+
+            // Mouse up event to stop rotating or moving
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                banana.style.cursor = 'grab';
+            });
+
+            // Click event to count the clicks
+            banana.addEventListener('click', () => {
+                clickCount++;
+                counter.textContent = `Clicks: ${clickCount}`;
+            });
+
+            // Prevent text selection during dragging or moving
+            document.addEventListener('mousedown', (e) => e.preventDefault());
+        </script>
+    </Div>
+</body>
+
+</html>

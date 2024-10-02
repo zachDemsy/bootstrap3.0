@@ -1,0 +1,78 @@
+/* The sidebar */
+
+.sidebar {
+    height: 100%;
+    width: 0;
+    /* Initially hidden */
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.3s;
+    /* Smooth transition */
+}
+
+
+/* Button to toggle sidebar */
+
+.togglebtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 10px;
+    display: block;
+}
+
+
+/* Sidebar items */
+
+.sidebar-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 60px;
+    /* Space for button */
+}
+
+.sidebar-items a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    align-content: ;
+}
+
+.sidebar-items a:hover {
+    color: #f1f1f1;
+}
+
+
+/* Main content */
+
+#main {
+    transition: margin-left 0.3s;
+    padding: 16px;
+}
+
+
+/* Show sidebar with 20% width */
+
+.sidebar.show {
+    width: 20%;
+}
+
+
+/* Media query for responsiveness */
+
+@media screen and (max-height: 450px) {
+    .sidebar-items a {
+        font-size: 18px;
+    }
+}

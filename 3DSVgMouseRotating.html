@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Rotating Star</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        
+        #starContainer {
+            width: 300px;
+            height: 300px;
+            perspective: 1000px;
+        }
+        
+        #star {
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg);
+            transition: transform 0.1s linear;
+        }
+        
+        .star-layer {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            fill: gold;
+            stroke: black;
+            stroke-width: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="starContainer">
+        <div id="star">
+            <!-- Multiple layers of stars to simulate 3D -->
+            <svg class="star-layer" style="transform: translateZ(-10px);" viewBox="-50 -50 100 100">
+                <polygon points="0,-40 11,-14 38,-12 17,6 23,36 0,20 -23,36 -17,6 -38,-12 -11,-14" />
+            </svg>
+            <svg class="star-layer" style="transform: translateZ(0px);" viewBox="-50 -50 100 100">
+                <polygon points="0,-40 11,-14 38,-12 17,6 23,36 0,20 -23,36 -17,6 -38,-12 -11,-14" />
+            </svg>
+            <svg class="star-layer" style="transform: translateZ(10px);" viewBox="-50 -50 100 100">
+                <polygon points="0,-40 11,-14 38,-12 17,6 23,36 0,20 -23,36 -17,6 -38,-12 -11,-14" />
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        const star = document.getElementById('star');
+        let isDragging = false;
+        let lastMouseX, lastMouseY;
+        let rotationX = 0;
+        let rotationY = 0;
+
+        // Mouse down event to start rotating
+        star.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
+
+        // Mouse move event to rotate the star
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const deltaX = e.clientX - lastMouseX;
+                const deltaY = e.clientY - lastMouseY;
+                rotationY += deltaX * 0.5; // Adjust rotation speed
+                rotationX -= deltaY * 0.5; // Adjust rotation speed
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+
+                // Apply rotation
+                star.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+            }
+        });
+
+        // Mouse up event to stop rotating
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // Prevent text selection during dragging
+        document.addEventListener('mousedown', (e) => e.preventDefault());
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        /* Style the input field */
+        
+        #myInput {
+            padding: 20px;
+            margin-top: -6px;
+            border: 0;
+            border-radius: 0;
+            background: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- filter-table -->
+    <div class="container">
+        <h2>Filterable Table</h2>
+        <p>Type something in the input field to search the table for first names, last names or emails:</p>
+        <input class="form-control" id="myInput" type="text" placeholder="Search..">
+        <br>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                </tr>
+                <tr>
+                    <td>Mary</td>
+                    <td>Moe</td>
+                    <td>mary@mail.com</td>
+                </tr>
+                <tr>
+                    <td>July</td>
+                    <td>Dooley</td>
+                    <td>july@greatstuff.com</td>
+                </tr>
+                <tr>
+                    <td>Anja</td>
+                    <td>Ravendale</td>
+                    <td>a_r@test.com</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>Note that we start the search in tbody, to prevent filtering the table headers.</p>
+    </div>
+
+    <script>
+    </script>
+    <!-- Filter-list -->
+    <div class="container">
+        <h2>Filterable List</h2>
+        <p>Type something in the input field to search the list for specific items:</p>
+        <input class="form-control" id="myInput2" type="text" placeholder="Search..">
+        <br>
+        <ul class="list-group" id="myList">
+            <li class="list-group-item">First item</li>
+            <li class="list-group-item">Second item</li>
+            <li class="list-group-item">Third item</li>
+            <li class="list-group-item">Fourth</li>
+        </ul>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#myInput2").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myList li").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+    <!-- dropdown -->
+    <div class="container">
+        <h2>Filterable Dropdown</h2>
+        <p>Open the dropdown menu and type something in the input field to search for dropdown items:</p>
+        <p>Note that we have styled the input field to fit the dropdown items.</p>
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+          <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <input class="form-control" id="myInput3" type="text" placeholder="Search..">
+                <li><a href="#">HTML</a></li>
+                <li><a href="#">CSS</a></li>
+                <li><a href="#">JavaScript</a></li>
+                <li><a href="#">jQuery</a></li>
+                <li><a href="#">Bootstrap</a></li>
+                <li><a href="#">Angular</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#myInput3").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".dropdown-menu li").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+    <!-- Filter-Anything -->
+    <div class="container">
+        <h2>Filter Anything</h2>
+        <p>Type something in the input field to search for a specific text inside the div element with id="myDIV":</p>
+        <input class="form-control" id="myInput4" type="text" placeholder="Search..">
+        <div id="myDIV">
+            <p>I am a paragraph.</p>
+            <div>I am a div element inside div.</div>
+            <button class="btn">I am a button</button>
+            <button class="btn btn-info">Another button</button>
+            <p>Another paragraph.</p>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#myInput4").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myDIV *").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        $(document).ready(function() {
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>

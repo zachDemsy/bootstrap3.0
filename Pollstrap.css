@@ -1,0 +1,41 @@
+.custom-na {
+    background-color: black;
+    color: brown;
+}
+
+.nav-hover ul li :hover {
+    background-color: brown;
+    color: black;
+}
+
+.custom-btn {
+    background-color: black;
+    /* Custom background color */
+    border-radius: 10px;
+    /* Custom border radius */
+    padding: 10px 20px;
+    /* Custom padding */
+    font-size: 1.2em;
+    /* Custom font size */
+}
+
+.custom-btn:hover {
+    background-color: #ff4500;
+    color: black;
+    font-size: 1.2em;
+    font-weight: bold;
+    /* Custom hover background color */
+}
+
+.custom-nav {
+    background-color: transparent;
+    color: #ff4500;
+}
+
+.custom-nav:hover {
+    color: #ff4500;
+}
+
+.custom-nav ul {
+    color: #ff4500;
+}
